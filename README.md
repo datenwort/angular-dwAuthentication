@@ -65,80 +65,80 @@
 		
 ```javascript
 
-		IndexController.$inject = ['$scope', '$rootScope', 'dwAuthConfig', 'dwAuthService'];
+	IndexController.$inject = ['$scope', '$rootScope', 'dwAuthConfig', 'dwAuthService'];
+	
+	function IndexController($scope, $rootScope, AuthConfig, dwAuthService) {
 		
-		function IndexController($scope, $rootScope, AuthConfig, dwAuthService) {
-			
-			var vm = this;
-			
-			vm.currentUser = { name: 'Karl', email: '', role: AuthConfig.roles.guest};
-			vm.userRoles = AuthConfig.roles;
-			vm.isAuthorized = dwAuthService.isAuthorized;
- 
-			$rootScope.$on('dw:userChanged', function (event, data) {
-				vm.currentUser = data;
-				console.log(data);
-				console.log(dwAuthService.isAuthenticated());
-				console.log(vm.isAuthorized(data.role));
-			});
-		}
-	})();
+		var vm = this;
+		
+		vm.currentUser = { name: 'Karl', email: '', role: AuthConfig.roles.guest};
+		vm.userRoles = AuthConfig.roles;
+		vm.isAuthorized = dwAuthService.isAuthorized;
+
+		$rootScope.$on('dw:userChanged', function (event, data) {
+			vm.currentUser = data;
+			console.log(data);
+			console.log(dwAuthService.isAuthenticated());
+			console.log(vm.isAuthorized(data.role));
+		});
+	}
+})();
 ```
 
 **index.html**
 
 ```html
-	<!DOCTYPE html>
-	<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-	    <title>Example dwAuthentication</title>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Example dwAuthentication</title>
 
-		<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
-	    <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
-		<script type="text/javascript" src="node_modules/ui-router/angular-ui-router.js"></script>
+	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="node_modules/ui-router/angular-ui-router.js"></script>
 
-		<script type="text/javascript" src="bower_components/dwAuthentification/dist/dwAuthentication.min.js"></script>
-	    <script type="text/javascript" src="app.js"></script>
-	
-	</head>
-	<body ng-app="dwExample">
-		<dw-login-dialog>
-			<form name="loginForm" ng-submit="vm.login()" novalidate>
-				<label for="username">Username:</label>
-				<input type="text" id="username" ng-model="vm.credentials.username">
-				<label for="password">Password:</label>
-				<input type="password" id="password" ng-model="vm.credentials.password">
-				<label for="remember">Remember me</label>
-				<input type="checkbox" id="remember" ng-model="vm.credentials.store">
-				<button type="submit">Login</button>
-			</form>
-		</dw-login-dialog>
-		<div ng-controller="IndexController as vm">
-			<div ng-if="vm.currentUser">Welcome, {{ vm.currentUser.name }}</div>
-			<div ng-if="vm.isAuthorized(vm.userRoles.admin)">You're admin.</div>
-			{{ vm.currentUser.role }} {{ vm.currentUser.role == vm.userRoles.editor}}
-			<div ng-switch on="vm.currentUser.role">
-				<div ng-switch-when="8">You're admin.</div>
-				<div ng-switch-when="4">You're editor.</div>
-				<div ng-switch-default>You're something else.</div>
-			</div>
+	<script type="text/javascript" src="bower_components/dwAuthentification/dist/dwAuthentication.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+
+</head>
+<body ng-app="dwExample">
+	<dw-login-dialog>
+		<form name="loginForm" ng-submit="vm.login()" novalidate>
+			<label for="username">Username:</label>
+			<input type="text" id="username" ng-model="vm.credentials.username">
+			<label for="password">Password:</label>
+			<input type="password" id="password" ng-model="vm.credentials.password">
+			<label for="remember">Remember me</label>
+			<input type="checkbox" id="remember" ng-model="vm.credentials.store">
+			<button type="submit">Login</button>
+		</form>
+	</dw-login-dialog>
+	<div ng-controller="IndexController as vm">
+		<div ng-if="vm.currentUser">Welcome, {{ vm.currentUser.name }}</div>
+		<div ng-if="vm.isAuthorized(vm.userRoles.admin)">You're admin.</div>
+		{{ vm.currentUser.role }} {{ vm.currentUser.role == vm.userRoles.editor}}
+		<div ng-switch on="vm.currentUser.role">
+			<div ng-switch-when="8">You're admin.</div>
+			<div ng-switch-when="4">You're editor.</div>
+			<div ng-switch-default>You're something else.</div>
 		</div>
-		<a ui-sref="dashboard">Link</a>
-	</body>
-	</html>
+	</div>
+	<a ui-sref="dashboard">Link</a>
+</body>
+</html>
 ```
 
 ## Configuration ##
 
 ```javascript
-	angular
-		.config(function(dwAuthConfigProvider) {
-		    dwAuthConfigProvider.set({
-                loginUrl: '/api/v1/login',
-                exclusiveRoles: false,
-		        roles: { admin: 8, editor: 4, user: 2, guest: 1 }
-		    });
-		})
+angular
+	.config(function(dwAuthConfigProvider) {
+	    dwAuthConfigProvider.set({
+            loginUrl: '/api/v1/login',
+            exclusiveRoles: false,
+	        roles: { admin: 8, editor: 4, user: 2, guest: 1 }
+	    });
+	})
 ```
 
 ### loginURL ###
@@ -147,10 +147,10 @@ Set the URL where to check the login credentials.
 The standard is ``.
 
 ```javascript
-	angular
-		.config(function(dwAuthConfigProvider) {
-		    dwAuthConfigProvider.set({ loginUrl: '/api/v1/login' })
-		});
+angular
+	.config(function(dwAuthConfigProvider) {
+	    dwAuthConfigProvider.set({ loginUrl: '/api/v1/login' })
+	});
 ```
 
 ### exclusiveRoles ###
@@ -161,10 +161,10 @@ if `exclusiveRoles` is set the must have exactly the provided role. Without `exc
 The standard is `false`.
 
 ```javascript
-	angular
-		.config(function(dwAuthConfigProvider) {
-		    dwAuthConfigProvider.set({ exclusiveRoles: false })
-		});
+angular
+	.config(function(dwAuthConfigProvider) {
+	    dwAuthConfigProvider.set({ exclusiveRoles: false })
+	});
 ```
 ### roles ###
 
@@ -174,19 +174,19 @@ Internally, groups will be checked for roles.all to allow access without restric
 **`exclusiveRole = true`**  
 
 ```javascript
-	angular
-		.config(function(dwAuthConfigProvider) {
-		    dwAuthConfigProvider.set({ loginUrl: '/login' })
-		        roles: { admin: 'admin', editor: 'editor', user: 'user', all: '*'}
-		});
+angular
+	.config(function(dwAuthConfigProvider) {
+	    dwAuthConfigProvider.set({ loginUrl: '/login' })
+	        roles: { admin: 'admin', editor: 'editor', user: 'user', all: '*'}
+	});
 ```
 
 **`exclusiveRole = false`**  
 
 ```javascript
-	angular
-		.config(function(dwAuthConfigProvider) {
-		    dwAuthConfigProvider.set({ loginUrl: '/login' })
-		        roles: { admin: 8, editor: 4, user: 2, guest: 1 }
-		});
+angular
+	.config(function(dwAuthConfigProvider) {
+	    dwAuthConfigProvider.set({ loginUrl: '/login' })
+	        roles: { admin: 8, editor: 4, user: 2, guest: 1 }
+	});
 ```
