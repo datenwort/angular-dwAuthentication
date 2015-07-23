@@ -6,7 +6,7 @@
 
 ```javascript
 
-	(function () {
+(function () {
 
     'use strict';
 
@@ -63,6 +63,8 @@
 
 **Controller**
 		
+```javascript
+
 		IndexController.$inject = ['$scope', '$rootScope', 'dwAuthConfig', 'dwAuthService'];
 		
 		function IndexController($scope, $rootScope, AuthConfig, dwAuthService) {
@@ -81,9 +83,11 @@
 			});
 		}
 	})();
+```
 
 **index.html**
 
+```html
 	<!DOCTYPE html>
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -122,11 +126,12 @@
 		<a ui-sref="dashboard">Link</a>
 	</body>
 	</html>
-
+```
 
 ## Configuration ##
 
-    angular
+```javascript
+	angular
 		.config(function(dwAuthConfigProvider) {
 		    dwAuthConfigProvider.set({
                 loginUrl: '/api/v1/login',
@@ -134,16 +139,19 @@
 		        roles: { admin: 8, editor: 4, user: 2, guest: 1 }
 		    });
 		})
+```
 
 ### loginURL ###
 
 Set the URL where to check the login credentials.
 The standard is ``.
 
+```javascript
 	angular
 		.config(function(dwAuthConfigProvider) {
 		    dwAuthConfigProvider.set({ loginUrl: '/api/v1/login' })
 		});
+```
 
 ### exclusiveRoles ###
 
@@ -152,11 +160,12 @@ Two types of user checks are possible: exclusive roles or cascading roles.
 if `exclusiveRoles` is set the must have exactly the provided role. Without `exclusiveRoles` all user with a role greater equal the provided one.
 The standard is `false`.
 
+```javascript
 	angular
 		.config(function(dwAuthConfigProvider) {
 		    dwAuthConfigProvider.set({ exclusiveRoles: false })
 		});
-
+```
 ### roles ###
 
 Set available user roles. The definition of the roles depends on the `exclusiveRole` parameter.
@@ -164,16 +173,20 @@ Internally, groups will be checked for roles.all to allow access without restric
 
 **`exclusiveRole = true`**  
 
+```javascript
 	angular
 		.config(function(dwAuthConfigProvider) {
 		    dwAuthConfigProvider.set({ loginUrl: '/login' })
 		        roles: { admin: 'admin', editor: 'editor', user: 'user', all: '*'}
 		});
+```
 
 **`exclusiveRole = false`**  
 
+```javascript
 	angular
 		.config(function(dwAuthConfigProvider) {
 		    dwAuthConfigProvider.set({ loginUrl: '/login' })
 		        roles: { admin: 8, editor: 4, user: 2, guest: 1 }
 		});
+```
