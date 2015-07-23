@@ -4,6 +4,8 @@
 
 **app.js**
 
+```javascript
+
 	(function () {
 
     'use strict';
@@ -57,6 +59,7 @@
 			});
 		})
 		.controller('IndexController', IndexController);
+```
 
 **Controller**
 		
