@@ -1,5 +1,21 @@
 # dwAuthentication #
 
+## Version ##
+
+0.4.0
+
+<!--## Installation ##
+
+### bower ###
+
+`bower install angular-dwAuthentication --save`
+
+### npm ###
+
+`npm install angular-dwAuthentication --save`
+
+## Dependecies ##-->
+
 ## Example ##
 
 **app.js**
@@ -41,7 +57,6 @@
 		.run(function ($rootScope, AUTH_EVENTS, dwAuthService) {
 		    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 		        $.each(toState.views, function (viewName, view) {
-					console.log(viewName);
                 
 					var authorizedRoles = view.data.authorizedRoles;
 				
@@ -71,15 +86,12 @@
 		
 		var vm = this;
 		
-		vm.currentUser = { name: 'Karl', email: '', role: AuthConfig.roles.guest};
+		vm.currentUser = { name: '', email: '', role: AuthConfig.roles.guest};
 		vm.userRoles = AuthConfig.roles;
 		vm.isAuthorized = dwAuthService.isAuthorized;
 
 		$rootScope.$on('dw:userChanged', function (event, data) {
 			vm.currentUser = data;
-			console.log(data);
-			console.log(dwAuthService.isAuthenticated());
-			console.log(vm.isAuthorized(data.role));
 		});
 	}
 })();
@@ -88,6 +100,7 @@
 **index.html**
 
 ```html
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -179,6 +192,31 @@ angular
 	    dwAuthConfigProvider.set({ loginUrl: '/login' })
 	        roles: { admin: 'admin', editor: 'editor', user: 'user', all: '*'}
 	});
+```
+
+Can be used as array to allow more than one user group access to the page.
+
+```javascript
+angular
+	.config(function ($stateProvider, dwAuthConfigProvider) {
+		$stateProvider.state('dashboard', {
+			url: '/dashboard',
+			views: {
+				"viewA": {
+				    template: '<div style="background-color: red; width:100px; height:100px;"></div>',
+					data: {
+					    authorizedRoles: dwAuthConfigProvider.roles().guest
+					}
+				},
+				"viewB": {
+				    template: '<div style="background-color: black; width:100px; height:100px;"></div>',
+				    data: {
+				        authorizedRoles: [dwAuthConfigProvider.roles().admin, dwAuthConfigProvider.roles().editor]
+					}
+				}
+			}
+		});
+	})
 ```
 
 **`exclusiveRole = false`**  
