@@ -49,9 +49,6 @@
         }
         
 		vm.login = function () {
-			// DUMMY
-			Session.create(1, 1, 4);
-			$rootScope.$broadcast('dw:userChanged', {name: 'john', email: 'demo@demo.de', role: 'editor'});
 			
 			AuthService.login(vm.credentials).then(function (user) {
 				$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
