@@ -1,0 +1,360 @@
+{
+    "project": {
+        "name": "dwAuthentification",
+        "description": "angular login authentication",
+        "version": "0.5.0",
+        "url": "https://github.com/datenwort/angular-dwAuthentication"
+    },
+    "files": {
+        "src\\app.config.js": {
+            "name": "src\\app.config.js",
+            "modules": {
+                "dwAuthInterceptorConfiguration": 1
+            },
+            "classes": {
+                "AuthInterceptorConfiguration": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\app.module.js": {
+            "name": "src\\app.module.js",
+            "modules": {
+                "dwAuthentification": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\authconfig.provider.js": {
+            "name": "src\\authconfig.provider.js",
+            "modules": {
+                "dwAuthConfig": 1
+            },
+            "classes": {
+                "YUIDoc": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\authinterceptor.factory.js": {
+            "name": "src\\authinterceptor.factory.js",
+            "modules": {
+                "dwAuthInterceptor": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\authservice.factory.js": {
+            "name": "src\\authservice.factory.js",
+            "modules": {
+                "dwAuthService": 1
+            },
+            "classes": {
+                "AuthConfig": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "dwAuthentification": {
+            "name": "dwAuthentification",
+            "submodules": {
+                "dwAuthInterceptorConfiguration": 1,
+                "dwAuthConfig": 1,
+                "dwAuthInterceptor": 1,
+                "dwAuthService": 1
+            },
+            "classes": {
+                "AuthInterceptorConfiguration": 1,
+                "AuthConfig": 1,
+                "YUIDoc": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src\\authconfig.provider.js",
+            "line": 28,
+            "description": "Angularjs module to capsule login techniques \nContains\n- login directive as login window\n- persistence layer\n- configuration items",
+            "is_constructor": 1
+        },
+        "dwAuthInterceptorConfiguration": {
+            "name": "dwAuthInterceptorConfiguration",
+            "submodules": {},
+            "classes": {
+                "AuthInterceptorConfiguration": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "dwAuthentification",
+            "namespace": "",
+            "file": "src\\app.config.js",
+            "line": 23,
+            "description": "Handles the configuration for page forwarding of HTML error codes"
+        },
+        "dwAuthConfig": {
+            "name": "dwAuthConfig",
+            "submodules": {},
+            "classes": {
+                "YUIDoc": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "dwAuthentification",
+            "namespace": "",
+            "file": "src\\authconfig.provider.js",
+            "line": 28,
+            "description": "This is the __module__ description for the `YUIDoc` module.\n\n    var options = {\n        paths: [ './lib' ],\n        outdir: './out'\n    };\n\n    var Y = require('yuidoc');\n    var json = (new Y.YUIDoc(options)).run();"
+        },
+        "dwAuthInterceptor": {
+            "name": "dwAuthInterceptor",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "dwAuthentification",
+            "namespace": "",
+            "file": "src\\authinterceptor.factory.js",
+            "line": 5
+        },
+        "dwAuthService": {
+            "name": "dwAuthService",
+            "submodules": {},
+            "classes": {
+                "AuthConfig": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "dwAuthentification",
+            "namespace": "",
+            "file": "src\\authservice.factory.js",
+            "line": 15,
+            "description": "Handles configuration items for the module"
+        }
+    },
+    "classes": {
+        "AuthInterceptorConfiguration": {
+            "name": "AuthInterceptorConfiguration",
+            "shortname": "AuthInterceptorConfiguration",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "dwAuthentification",
+            "submodule": "dwAuthInterceptorConfiguration",
+            "namespace": "",
+            "file": "src\\app.config.js",
+            "line": 23,
+            "description": "Handles the configuration for page forwarding of HTML error codes",
+            "params": [
+                {
+                    "name": "$httpProvider",
+                    "description": "Injects $http service",
+                    "type": "Service"
+                }
+            ],
+            "static": 1
+        },
+        "AuthConfig": {
+            "name": "AuthConfig",
+            "shortname": "AuthConfig",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "dwAuthentification",
+            "submodule": "dwAuthService",
+            "namespace": "",
+            "file": "src\\authservice.factory.js",
+            "line": 15,
+            "description": "Handles configuration items for the module",
+            "static": 1,
+            "params": [
+                {
+                    "name": "$http",
+                    "description": "Injects $http service",
+                    "type": "Service"
+                },
+                {
+                    "name": "Session",
+                    "description": "Injects Session storage",
+                    "type": "Service"
+                },
+                {
+                    "name": "dwAuthConfig",
+                    "description": "Injects the configuration",
+                    "type": "Provider"
+                }
+            ]
+        },
+        "YUIDoc": {
+            "name": "YUIDoc",
+            "shortname": "YUIDoc",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "dwAuthentification",
+            "submodule": "dwAuthConfig",
+            "namespace": "",
+            "file": "src\\authconfig.provider.js",
+            "line": 28,
+            "description": "This is the __module__ description for the `YUIDoc` module.\n\n    var options = {\n        paths: [ './lib' ],\n        outdir: './out'\n    };\n\n    var Y = require('yuidoc');\n    var json = (new Y.YUIDoc(options)).run();",
+            "mainName": "yuidoc",
+            "tag": "main",
+            "itemtype": "main",
+            "_main": true
+        }
+    },
+    "classitems": [
+        {
+            "file": "src\\authconfig.provider.js",
+            "line": 43,
+            "description": "My method description.  Like other pieces of your comment blocks, \nthis can span multiple lines.\n    AuthConfig.set({ loginUrl: '/api/vi/login', \n\t  exclusiveRoles: false, \n\t    roles: { admin: 2, guest: 1, all: 0 }});",
+            "itemtype": "method",
+            "name": "set",
+            "params": [
+                {
+                    "name": "constants",
+                    "description": "Json object with",
+                    "type": "Object"
+                }
+            ],
+            "example": [
+                " \n    \n    AuthConfig.set(\n    { loginUrl: '/api/vi/login', \n      exclusiveRoles: false, \n      roles: { admin: 2, guest: 1, all: 0 }\n    });"
+            ],
+            "class": "YUIDoc",
+            "module": "dwAuthentification",
+            "submodule": "dwAuthConfig"
+        },
+        {
+            "file": "src\\authconfig.provider.js",
+            "line": 63,
+            "description": "Get all configuration items",
+            "itemtype": "method",
+            "name": "$get",
+            "return": {
+                "description": "Json-object with configuration items",
+                "type": "Object"
+            },
+            "class": "YUIDoc",
+            "module": "dwAuthentification",
+            "submodule": "dwAuthConfig"
+        },
+        {
+            "file": "src\\authconfig.provider.js",
+            "line": 78,
+            "description": "Get the roles defined for role authorization",
+            "itemtype": "method",
+            "name": "roles",
+            "return": {
+                "description": "Json-object with defined roles",
+                "type": "Object"
+            },
+            "class": "YUIDoc",
+            "module": "dwAuthentification",
+            "submodule": "dwAuthConfig"
+        },
+        {
+            "file": "src\\authconfig.provider.js",
+            "line": 87,
+            "description": "Get the structure of the user identification",
+            "itemtype": "method",
+            "name": "authStructure",
+            "return": {
+                "description": "Json-object with user data",
+                "type": "Object"
+            },
+            "class": "YUIDoc",
+            "module": "dwAuthentification",
+            "submodule": "dwAuthConfig"
+        },
+        {
+            "file": "src\\authservice.factory.js",
+            "line": 27,
+            "description": "Send credentials to login api and return result",
+            "itemtype": "method",
+            "name": "login",
+            "params": [
+                {
+                    "name": "credentials",
+                    "description": "...",
+                    "type": "JSON"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "AuthConfig",
+            "module": "dwAuthentification",
+            "submodule": "dwAuthService"
+        },
+        {
+            "file": "src\\authservice.factory.js",
+            "line": 42,
+            "description": "Verify a user by sending a stored key to a verifcation api and return result",
+            "itemtype": "method",
+            "name": "verify",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "...",
+                    "type": "JSON"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "AuthConfig",
+            "module": "dwAuthentification",
+            "submodule": "dwAuthService"
+        },
+        {
+            "file": "src\\authservice.factory.js",
+            "line": 57,
+            "description": "Check, if an user is already logged in",
+            "itemtype": "method",
+            "name": "isAuthenticated",
+            "return": {
+                "description": "true|false",
+                "type": "Boolean"
+            },
+            "class": "AuthConfig",
+            "module": "dwAuthentification",
+            "submodule": "dwAuthService"
+        },
+        {
+            "file": "src\\authservice.factory.js",
+            "line": 66,
+            "description": "Check user roles against a given role set",
+            "itemtype": "method",
+            "name": "isAuthorized",
+            "params": [
+                {
+                    "name": "authorizedRoles",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "true|falsey",
+                "type": "Boolean"
+            },
+            "class": "AuthConfig",
+            "module": "dwAuthentification",
+            "submodule": "dwAuthService"
+        }
+    ],
+    "warnings": []
+}

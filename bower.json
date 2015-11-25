@@ -1,0 +1,37 @@
+{
+  "name": "angular dwAuthentification",
+  "version": "0.4.0",
+  "authors": [
+    "Sebastian <github@datenwort.com>"
+  ],
+  "description": "angularjs authentication module",
+  "main": "app.module.js",
+  "keywords": [
+    "angularjs",
+    "login",
+    "authentication",
+    "datenwort"
+  ],
+  "license": "MIT",
+  "private": true,
+  "homepage": "https://github.com/datenwort/angular-dwAuthentication",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/datenwort/angular-dwAuthentication.git"
+  },
+  "devDependencies": {
+    "jasmine": "~2.3.4"
+  },
+  "dependencies": {
+    "ngstorage": "~0.3.7",
+    "jquery": "~2.1.4",
+    "angular": "~1.4.3"
+  }
+}
