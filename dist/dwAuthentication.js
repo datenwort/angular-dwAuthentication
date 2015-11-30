@@ -157,9 +157,9 @@
         .module('dwAuthentication')
         .directive('dwLoginDialog', LoginDialog);
 		
-	LoginDialog.$inject = ['$compile'];
+	LoginDialog.$inject = ['$compile', 'AUTH_EVENTS'];
         
-    function LoginDialog($compile) {
+    function LoginDialog($compile, AUTH_EVENTS) {
         var directive = {
             restrict: 'EA',
             link: link,
@@ -170,7 +170,7 @@
             controllerAs: 'vm',
             bindToController: true,  // because the scope is isolated
             // templateUrl : './login.html',
-			template: "<ng-transclude></ng-transclude>",
+			template: "<ng-transclude ng-if='visible'></ng-transclude>",
             transclude: true,
 			replace: false
         };
@@ -182,6 +182,14 @@
 				var compiled = $compile(clone)(scope);
 				iElement.replaceWith(compiled);
 			});
+            
+            var showDialog = function () {
+                scope.visible = true;
+            };
+            
+            scope.visible = false;
+            scope.$on(AUTH_EVENTS.notAuthenticated, showDialog);
+            scope.$on(AUTH_EVENTS.sessionTimeout, showDialog);
 		}
     }
     
