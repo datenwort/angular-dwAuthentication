@@ -1,20 +1,19 @@
 ﻿(function () {
 
-    'use strict';
+	'use strict';
 
-    angular
-		.module('dit', ['ui.router', 'dwAuthentification'])
+	angular
+		.module('dit', ['ui.router', 'dwAuthentication'])
 		.config(function(dwAuthConfigProvider) {
 		    dwAuthConfigProvider.set({
                 loginUrl: '/api/v1/login',
 				verificationUrl: 'api/v1/verify',
                 exclusiveRoles: false,
-				authStructure: {id:'', name: ''},
+				// authStructure: {id:'', name: ''},
 		        roles: { admin: 8, editor: 4, user: 2, guest: 1 } // exclusiveRoles = false
 		        //roles: { admin: 'admin', editor: 'editor', user: 'user', all: '*'} // exclusiveRoles = true
 		    });
 		})
-		.controller('IndexController', IndexController)
 		.config(function ($stateProvider, dwAuthConfigProvider) {
 			$stateProvider.state('dashboard', {
 				url: '/dashboard',
@@ -36,6 +35,7 @@
 				}
 			});
 		})
+		.controller('IndexController', IndexController)
 		.run(function ($rootScope, AUTH_EVENTS, dwAuthService) {
 		    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 		        $.each(toState.views, function (viewName, view) {
@@ -62,7 +62,7 @@
 			
 			var vm = this;
 			
-			vm.currentUser = { name: 'Karl', email: '', role: AuthConfig.roles.guest};
+			vm.currentUser = { name: 'Karl', email: '', role: AuthConfig.roles.admin};
 			vm.userRoles = AuthConfig.roles;
 			vm.isAuthorized = dwAuthService.isAuthorized;
  

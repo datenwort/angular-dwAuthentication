@@ -3,8 +3,8 @@
 	'use strict';
 	
 	angular
-        .module('dwAuthentification')
-		.constant('AUTH_EVENTS', {
+        .module('dwAuthentication')
+		.value('AUTH_EVENTS', {
 			loginSuccess: 'auth-login-success',
 			loginFailed: 'auth-login-failed',
 			logoutSuccess: 'auth-logout-success',
@@ -12,7 +12,7 @@
 			notAuthenticated: 'auth-not-authenticated',
 			notAuthorized: 'auth-not-authorized'
 		})
-		.config('dwAuthInterceptorConfiguration', AuthInterceptorConfiguration);
+		.config(AuthInterceptorConfiguration);
 		
 	AuthInterceptorConfiguration.$inject = ['$httpProvider'];
 		
@@ -20,9 +20,8 @@
 		$httpProvider.interceptors.push([
 			'$injector',
 			function ($injector) {
-				return $injector.get('AuthInterceptor');
+				return $injector.get('dwAuthInterceptor');
 			}
 		]);
 	}
-
 })();

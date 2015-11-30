@@ -1,0 +1,22 @@
+{
+  "name": "example",
+  "homepage": "https://github.com/datenwort/angular-dwAuthentication",
+  "authors": [
+    "github@datenwort.com"
+  ],
+  "description": "datenwort Authentication example",
+  "main": "index.html",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-ui-router": "ui-router#~0.2.15"
+  }
+}

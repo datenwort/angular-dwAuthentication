@@ -3,7 +3,7 @@
 	'use strict';
     
 	angular
-		.module('dwAuthentification')
+		.module('dwAuthentication')
 		.factory('dwAuthInterceptor', AuthInterceptor);
 
 	AuthInterceptor.$inject = ['$rootScope', '$q', 'AUTH_EVENTS'];

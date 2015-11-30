@@ -3,12 +3,10 @@
 	'use strict';
     
 	angular
-		.module('dwAuthentification')
+		.module('dwAuthentication')
 		.service('Session', Session);
 		
-	Session.$inject = ['$localStorage', '$sessionStorage'];
-	
-	function Session($localStorage, $sessionStorage) {
+	function Session() {
 	
 		var service = {
 			create : function (sessionId, userId, userRole) {
@@ -23,9 +21,9 @@
 			},
 			persist: function(durable) {
 				if (durable)
-					$sessionStorage.key = this.id;
+					console.log("permanent persist");
 				else 
-					$localStorage.key = this.id;
+					console.log("local persist");
 			},
 			load: function() {
 				//if ($localStorage.key != null)

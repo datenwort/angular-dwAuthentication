@@ -3,7 +3,7 @@
 	'use strict';
     
 	angular
-		.module('dwAuthentification')
+		.module('dwAuthentication')
 		.factory('dwAuthService', AuthService);
 
 	AuthService.$inject = ['$http', 'Session', 'dwAuthConfig'];

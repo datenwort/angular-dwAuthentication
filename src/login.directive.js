@@ -3,7 +3,7 @@
     'use strict';
     
     angular
-        .module('dwAuthentification')
+        .module('dwAuthentication')
         .directive('dwLoginDialog', LoginDialog);
 		
 	LoginDialog.$inject = ['$compile'];

@@ -3,7 +3,7 @@
 	'use strict';
  
 	angular
-		.module('dwAuthentification')
+		.module('dwAuthentication')
 		.provider('dwAuthConfig', AuthConfig);
 		
 	function AuthConfig()
@@ -24,8 +24,7 @@
 					loginUrl: values.loginUrl,
 					verificationUrl: values.verificationUrl,
 					exclusiveRoles: values.exclusiveRoles,
-					roles: values.roles,
-					authStructure: values.authStructure
+					roles: values.roles
 				};
 			},
 			roles: function () {
