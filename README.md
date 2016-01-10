@@ -2,7 +2,7 @@
 
 ## Version ##
 
-0.7.0
+0.8.0
 
 <!--## Installation ##
 
@@ -48,7 +48,7 @@
 					"viewB": {
 					    template: '<div style="background-color: black; width:100px; height:100px;"></div>',
 					    data: {
-					        authorizedRoles: dwAuthConfigProvider.roles().editor
+					        authorizedRoles: [dwAuthConfigProvider.roles().admin, dwAuthConfigProvider.roles().editor]
 						}
 					}
 				}
@@ -194,7 +194,7 @@ angular
 	});
 ```
 
-Can be used as array to allow more than one user group access to the page.
+If you want to grant access to more than one user group in an exclusive role set, arrays can be used to allow more than one user group access to the page.
 
 ```javascript
 angular
@@ -227,4 +227,29 @@ angular
 	    dwAuthConfigProvider.set({ loginUrl: '/login' })
 	        roles: { admin: 8, editor: 4, user: 2, guest: 1 }
 	});
+```
+
+In a non-exclusive set the minimum user group has to be given in the routing
+
+```javascript
+angular
+	.config(function ($stateProvider, dwAuthConfigProvider) {
+		$stateProvider.state('dashboard', {
+			url: '/dashboard',
+			views: {
+				"viewA": {
+				    template: '<div style="background-color: red; width:100px; height:100px;"></div>',
+					data: {
+					    authorizedRoles: dwAuthConfigProvider.roles().all
+					}
+				},
+				"adminView": {
+				    template: '<div style="background-color: black; width:100px; height:100px;"></div>',
+				    data: {
+				        authorizedRoles: dwAuthConfigProvider.roles().admin
+					}
+				}
+			}
+		});
+	})
 ```
