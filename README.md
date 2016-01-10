@@ -191,7 +191,7 @@ angular
 	.config(function(dwAuthConfigProvider) {
 	    dwAuthConfigProvider.set({
             loginUrl: '/api/v1/login',
-            exclusiveRoles: false,
+            exclusiveRoles: true,
 	        roles: { admin: 'admin', editor: 'editor', user: 'user', all: '*' }
 	    });
 	});
