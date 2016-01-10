@@ -189,12 +189,16 @@ Internally, groups will be checked for roles.all to allow access without restric
 ```javascript
 angular
 	.config(function(dwAuthConfigProvider) {
-	    dwAuthConfigProvider.set({ loginUrl: '/login' })
-	        roles: { admin: 'admin', editor: 'editor', user: 'user', all: '*'}
+	    dwAuthConfigProvider.set({
+            loginUrl: '/api/v1/login',
+            exclusiveRoles: false,
+	        roles: { admin: 'admin', editor: 'editor', user: 'user', all: '*' }
+	    });
 	});
 ```
 
 If you want to grant access to more than one user group in an exclusive role set, arrays can be used to allow more than one user group access to the page.
+the **roles.all** item is necessary than. 
 
 ```javascript
 angular
@@ -205,7 +209,7 @@ angular
 				"viewA": {
 				    template: '<div style="background-color: red; width:100px; height:100px;"></div>',
 					data: {
-					    authorizedRoles: dwAuthConfigProvider.roles().guest
+					    authorizedRoles: dwAuthConfigProvider.roles().all
 					}
 				},
 				"viewB": {
@@ -224,8 +228,11 @@ angular
 ```javascript
 angular
 	.config(function(dwAuthConfigProvider) {
-	    dwAuthConfigProvider.set({ loginUrl: '/login' })
+	    dwAuthConfigProvider.set({
+            loginUrl: '/api/v1/login',
+            exclusiveRoles: false,
 	        roles: { admin: 8, editor: 4, user: 2, guest: 1 }
+	    });
 	});
 ```
 
