@@ -1,3 +1,4 @@
+/*! dwAuthentication - v0.8.0 - 10-01-2016 */
 (function() {
 
 	'use strict';
@@ -106,71 +107,29 @@
 		.module('dwAuthentication')
 		.factory('dwAuthService', AuthService);
 
-	AuthService.$inject = ['$http', 'Session', 'dwAuthConfig'];
+	AuthService.$inject = ['$http', 'Session', 'dwAuthConfig', 'AUTH_EVENTS', '$rootScope'];
 		
-	function AuthService($http, Session, dwAuthConfig) {
+	function AuthService($http, Session, dwAuthConfig, AUTH_EVENTS, $rootScope) {
 		var authService = {
 			
-			login : function (credentials) {
+			login : function (credentials, headers) {
 				return $http
-					.post(dwAuthConfig.loginUrl, credentials)
+					.post(dwAuthConfig.loginUrl, credentials, headers)
 					.then(function (res) {
-						Session.create(res.data.id, res.data.user.id, res.data.user.role);
-						return res.data.user;
+						if (res.data.error === false) {
+							Session.create(res.data.id, res.data.user.id, res.data.user.role);
+							$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+							$rootScope.$broadcast('dw:userChanged', res.data.user);
+						}
+						return res.data;
+					}, function () {
+						$rootScope.$broadcast(AUTH_EVENTS.loginFailed);
 					});
-			},
-			verfiy: function(key) {
-				return $http
-					.post(dwAuthConfig.verificationUrl, key)
-					.then(function(res) {
-						Session.create(res.data.id, res.data.user.id, res.data.user.role);
-						return res.data.user;
-					});
-			},
-			isAuthenticated : function () {
-				return !!Session.userId;
-			},
-			isAuthorized : function (authorizedRoles) {
-
-			    if (dwAuthConfig.exclusiveRoles) {
-
-			        if (!angular.isArray(authorizedRoles)) {
-			            authorizedRoles = [authorizedRoles];
-			        }
-
-			        return (authorizedRoles.indexOf(dwAuthConfig.roles.all) !== -1 || (authService.isAuthenticated() && authorizedRoles.indexOf(Session.userRole) !== -1));
-			    } else {
-			        return (authorizedRoles === dwAuthConfig.roles.all || (authService.isAuthenticated() && (Session.userRole >= authorizedRoles)));
-			    }
-			},
-		};
-
-		return authService;
-	}
-	
-})();
-(function() {
-    
-    'use strict';
-    
-    angular
-        .module('dwAuthentication')
-        .directive('dwLoginDialog', LoginDialog);
-		
-	LoginDialog.$inject = ['$compile', 'AUTH_EVENTS'];
-        
-    function LoginDialog($compile, AUTH_EVENTS) {
-        var directive = {
-            restrict: 'EA',
-            link: link,
-            scope: {
-                /* */
             },
             controller: LoginController,
             controllerAs: 'vm',
             bindToController: true,  // because the scope is isolated
-            // templateUrl : './login.html',
-			template: "<ng-transclude ng-if='visible'></ng-transclude>",
+            template: "<ng-transclude></ng-transclude>",
             transclude: true,
 			replace: false
         };
@@ -182,40 +141,12 @@
 				var compiled = $compile(clone)(scope);
 				iElement.replaceWith(compiled);
 			});
-            
-            var showDialog = function () {
-                scope.visible = true;
-            };
-            
-            scope.visible = false;
-            scope.$on(AUTH_EVENTS.notAuthenticated, showDialog);
-            scope.$on(AUTH_EVENTS.sessionTimeout, showDialog);
 		}
     }
     
 	LoginController.$inject = ['$scope', '$rootScope', 'AUTH_EVENTS', 'dwAuthService', 'Session'];
 
     function LoginController($scope ,$rootScope, AUTH_EVENTS, AuthService, Session) {
-		
-		var vm = this;
-
-		vm.credentials = {};
-
-        activate();
-        
-        function activate() {
-			/* */
-        }
-        
-		vm.login = function () {
-			
-			AuthService.login(vm.credentials).then(function (user) {
-				$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-				$rootScope.$broadcast('dw:userChanged', user);
-			}, function () {
-				$rootScope.$broadcast(AUTH_EVENTS.loginFailed);
-			});
-		};
 	}
 })();
 
@@ -232,7 +163,7 @@
 	
 		var service = {
 			create : function (sessionId, userId, userRole) {
-				this.id = sessionId;
+				this.id = generateUUID();
 				this.userId = userId;
 				this.userRole = userRole;
 			},
@@ -248,12 +179,20 @@
 					console.log("local persist");
 			},
 			load: function() {
-				//if ($localStorage.key != null)
-					//else if 
 			},
 			check: function() {
 			}
 		};
+		
+		function generateUUID() {
+			var d = new Date().getTime();
+			var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+				var r = (d + Math.random()*16)%16 | 0;
+				d = Math.floor(d/16);
+				return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+			});
+			return uuid;
+		}
 		
 		return service;
 	}
