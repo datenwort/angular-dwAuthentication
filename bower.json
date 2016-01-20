@@ -30,7 +30,6 @@
     "jasmine": "~2.3.4"
   },
   "dependencies": {
-    "ngstorage": "~0.3.7",
     "jquery": "~2.1.4",
     "angular": "~1.4.3"
   }
