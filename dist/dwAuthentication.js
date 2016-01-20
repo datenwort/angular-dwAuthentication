@@ -1,4 +1,4 @@
-/*! dwAuthentication - v0.8.0 - 20-01-2016 */
+/*! dwAuthentication - v0.8.1 - 20-01-2016 */
 (function() {
 
 	'use strict';
