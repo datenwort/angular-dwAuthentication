@@ -43,12 +43,14 @@
             scope.$on(AUTH_EVENTS.notAuthenticated, showDialog);
             scope.$on(AUTH_EVENTS.sessionTimeout, showDialog);
         */
+        
     }
     
 	LoginController.$inject = ['$scope', '$rootScope', 'AUTH_EVENTS', 'dwAuthService', 'Session'];
 
     function LoginController($scope ,$rootScope, AUTH_EVENTS, AuthService, Session) {
-		/*
+		
+        /*
 		var vm = this;
 
 		vm.credentials = {};
@@ -66,7 +68,9 @@
 			}, function () {
 				$rootScope.$broadcast(AUTH_EVENTS.loginFailed);
 			});
-		};*/
+		};
+        */
+        
 	}
 })();
 

@@ -25,12 +25,15 @@
 						$rootScope.$broadcast(AUTH_EVENTS.loginFailed);
 					});
 					
-			/*return $http.post('http://sven.afvh.de/menue.php',
+			/*
+                return $http.post('http://sven.afvh.de/menue.php',
 							{ uid: credentials.username, pwd: credentials.password },
 							{ headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Access-Control-Allow-Origin': '*' }, transformRequest: $rootScope.transform }
 				   ).then(function(response) {
 					  return { responseStatus: response.status, data: response.data.substring(response.data.indexOf('rss.php'), response.data.indexOf('"', response.data.indexOf('rss.php'))) }; 
-				   });*/  
+				   });
+            */
+              
 			},
 			verfiy: function(key) {
 				return $http
