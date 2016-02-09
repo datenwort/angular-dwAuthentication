@@ -15,7 +15,7 @@
 				return $http
 					.post(dwAuthConfig.loginUrl, credentials, headers)
 					.then(function (res) {
-						if (res.data.error === false) {
+						if (res.data.error == false) {
 							Session.create(res.data.id, res.data.user.id, res.data.user.role);
 							$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
 							$rootScope.$broadcast('dw:userChanged', res.data.user);

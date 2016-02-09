@@ -1,4 +1,4 @@
-/*! dwAuthentication - v0.8.1 - 20-01-2016 */
+/*! dwAuthentication - v0.8.2 - 09-02-2016 */
 (function() {
 
 	'use strict';
@@ -116,7 +116,7 @@
 				return $http
 					.post(dwAuthConfig.loginUrl, credentials, headers)
 					.then(function (res) {
-						if (res.data.error === false) {
+						if (res.data.error == false) {
 							Session.create(res.data.id, res.data.user.id, res.data.user.role);
 							$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
 							$rootScope.$broadcast('dw:userChanged', res.data.user);
