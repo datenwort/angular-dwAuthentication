@@ -1,4 +1,4 @@
-/*! dwAuthentication - v0.8.2 - 09-02-2016 */
+/*! dwAuthentication - v0.9.0 - 04-04-2016 */
 (function() {
 
 	'use strict';
@@ -47,6 +47,7 @@
 		var values = {
 			loginUrl: '',
 			verificationUrl: '',
+            logoutUrl: '',
 			exclusiveRoles: false,
 			roles: {}
 		};
@@ -59,6 +60,7 @@
 				return {
 					loginUrl: values.loginUrl,
 					verificationUrl: values.verificationUrl,
+                    logoutUrl: values.logoutUrl,
 					exclusiveRoles: values.exclusiveRoles,
 					roles: values.roles
 				};
@@ -112,9 +114,9 @@
 	function AuthService($http, Session, dwAuthConfig, AUTH_EVENTS, $rootScope) {
 		var authService = {
 			
-			login : function (credentials, headers) {
+			login : function (data, headers) {
 				return $http
-					.post(dwAuthConfig.loginUrl, credentials, headers)
+					.post(dwAuthConfig.loginUrl, data, headers)
 					.then(function (res) {
 						if (res.data.error == false) {
 							Session.create(res.data.id, res.data.user.id, res.data.user.role);
@@ -127,14 +129,26 @@
 					});
               
 			},
-			verfiy: function(key) {
+			verify: function(data, headers) {
 				return $http
-					.post(dwAuthConfig.verificationUrl, key)
+					.post(dwAuthConfig.verificationUrl, data, headers)
 					.then(function(res) {
-						Session.create(res.data.id, res.data.user.id, res.data.user.role);
-						return res.data.user;
+						return res.data;
 					});
 			},
+            logout: function(data, headers) {
+                return $http
+                    .post(dwAuthConfig.logoutUrl, data, headers)
+                    .then(function (res) {
+                        Session.destroy();
+                        $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
+                        $rootScope.$broadcast('dw:userChanged', null);
+                        return true;
+                    })
+                    .catch(function (res) {
+                        return false;
+                    });
+            },
 			isAuthenticated : function () {
 				return !!Session.userId;
 			},
@@ -157,47 +171,6 @@
 	}
 	
 })();
-(function() {
-    
-    'use strict';
-    
-    angular
-        .module('dwAuthentication')
-        .directive('dwLoginDialog', LoginDialog);
-		
-	LoginDialog.$inject = ['$compile'];
-        
-    function LoginDialog($compile) {
-        var directive = {
-            restrict: 'EA',
-            link: link,
-            scope: {
-            },
-            controller: LoginController,
-            controllerAs: 'vm',
-            bindToController: true,  // because the scope is isolated
-            template: "<ng-transclude></ng-transclude>",
-            transclude: true,
-			replace: false
-        };
-        
-        return directive;
-    
-        function link(scope, iElement, iAttrs, controller, transcludeFn) {
-			transcludeFn( scope.$parent.$new(), function(clone, innerScope){ // necessary to get/set transclude objects $scope.$parent.$new == necessary otherwise methods will be called twice
-				var compiled = $compile(clone)(scope);
-				iElement.replaceWith(compiled);
-			});
-		}
-        
-    }
-    
-	LoginController.$inject = ['$scope', '$rootScope', 'AUTH_EVENTS', 'dwAuthService', 'Session'];
-
-    function LoginController($scope ,$rootScope, AUTH_EVENTS, AuthService, Session) {
-        
-	}
-})();
 
 
 (function() {
@@ -211,7 +184,7 @@
 	function Session() {
 	
 		var service = {
-			create : function (sessionId, userId, userRole) {
+			create : function (userId, userRole) {
 				this.id = generateUUID();
 				this.userId = userId;
 				this.userRole = userRole;

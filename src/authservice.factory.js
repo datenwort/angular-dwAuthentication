@@ -11,9 +11,9 @@
 	function AuthService($http, Session, dwAuthConfig, AUTH_EVENTS, $rootScope) {
 		var authService = {
 			
-			login : function (credentials, headers) {
+			login : function (data, headers) {
 				return $http
-					.post(dwAuthConfig.loginUrl, credentials, headers)
+					.post(dwAuthConfig.loginUrl, data, headers)
 					.then(function (res) {
 						if (res.data.error == false) {
 							Session.create(res.data.id, res.data.user.id, res.data.user.role);
@@ -35,14 +35,28 @@
             */
               
 			},
-			verfiy: function(key) {
+			verify: function(data, headers) {
 				return $http
-					.post(dwAuthConfig.verificationUrl, key)
+					.post(dwAuthConfig.verificationUrl, data, headers)
 					.then(function(res) {
-						Session.create(res.data.id, res.data.user.id, res.data.user.role);
-						return res.data.user;
+						// Session.create(res.data.id, res.data.user.id, res.data.user.role);
+                        // $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+						return res.data;
 					});
 			},
+            logout: function(data, headers) {
+                return $http
+                    .post(dwAuthConfig.logoutUrl, data, headers)
+                    .then(function (res) {
+                        Session.destroy();
+                        $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
+                        $rootScope.$broadcast('dw:userChanged', null);
+                        return true;
+                    })
+                    .catch(function (res) {
+                        return false;
+                    });
+            },
 			isAuthenticated : function () {
 				return !!Session.userId;
 			},

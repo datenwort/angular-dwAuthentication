@@ -11,6 +11,7 @@
 		var values = {
 			loginUrl: '',
 			verificationUrl: '',
+            logoutUrl: '',
 			exclusiveRoles: false,
 			roles: {}
 		};
@@ -23,6 +24,7 @@
 				return {
 					loginUrl: values.loginUrl,
 					verificationUrl: values.verificationUrl,
+                    logoutUrl: values.logoutUrl,
 					exclusiveRoles: values.exclusiveRoles,
 					roles: values.roles
 				};

@@ -9,7 +9,7 @@
 	function Session() {
 	
 		var service = {
-			create : function (sessionId, userId, userRole) {
+			create : function (userId, userRole) {
 				this.id = generateUUID();
 				this.userId = userId;
 				this.userRole = userRole;
