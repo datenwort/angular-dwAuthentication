@@ -2,7 +2,7 @@
 
 ## Version ##
 
-0.8.0
+0.9.0
 
 <!--## Installation ##
 
@@ -31,6 +31,8 @@
 		.config(function(dwAuthConfigProvider) {
 		    dwAuthConfigProvider.set({
                 loginUrl: '/api/v1/login',
+                verificationUrl: '/api/v1/verifiy',
+                logoutUrl: '/api/v1/logout'
                 exclusiveRoles: false,
 		        roles: { admin: 8, editor: 4, user: 2, guest: 1 }
 		    });
@@ -115,17 +117,15 @@
 
 </head>
 <body ng-app="dwExample">
-	<dw-login-dialog>
-		<form name="loginForm" ng-submit="vm.login()" novalidate>
-			<label for="username">Username:</label>
-			<input type="text" id="username" ng-model="vm.credentials.username">
-			<label for="password">Password:</label>
-			<input type="password" id="password" ng-model="vm.credentials.password">
-			<label for="remember">Remember me</label>
-			<input type="checkbox" id="remember" ng-model="vm.credentials.store">
-			<button type="submit">Login</button>
-		</form>
-	</dw-login-dialog>
+    <form name="loginForm" ng-submit="vm.login()" novalidate>
+        <label for="username">Username:</label>
+        <input type="text" id="username" ng-model="vm.credentials.username">
+        <label for="password">Password:</label>
+        <input type="password" id="password" ng-model="vm.credentials.password">
+        <label for="remember">Remember me</label>
+        <input type="checkbox" id="remember" ng-model="vm.credentials.store">
+        <button type="submit">Login</button>
+    </form>
 	<div ng-controller="IndexController as vm">
 		<div ng-if="vm.currentUser">Welcome, {{ vm.currentUser.name }}</div>
 		<div ng-if="vm.isAuthorized(vm.userRoles.admin)">You're admin.</div>
@@ -148,6 +148,8 @@ angular
 	.config(function(dwAuthConfigProvider) {
 	    dwAuthConfigProvider.set({
             loginUrl: '/api/v1/login',
+            verificationUrl: '/api/v1/verify',
+            logoutUrl: '/api/v1/logout',
             exclusiveRoles: false,
 	        roles: { admin: 8, editor: 4, user: 2, guest: 1 }
 	    });
@@ -163,6 +165,30 @@ The standard is ``.
 angular
 	.config(function(dwAuthConfigProvider) {
 	    dwAuthConfigProvider.set({ loginUrl: '/api/v1/login' })
+	});
+```
+
+### verificationURL ###
+
+Set the URL where to verify the current login status.
+The standard is ``.
+
+```javascript
+angular
+	.config(function(dwAuthConfigProvider) {
+	    dwAuthConfigProvider.set({ verificationUrl: '/api/v1/verify' })
+	});
+```
+
+### logoutURL ###
+
+Set the URL where to logout the user.
+The standard is ``.
+
+```javascript
+angular
+	.config(function(dwAuthConfigProvider) {
+	    dwAuthConfigProvider.set({ logoutUrl: '/api/v1/logout' })
 	});
 ```
 
@@ -191,6 +217,8 @@ angular
 	.config(function(dwAuthConfigProvider) {
 	    dwAuthConfigProvider.set({
             loginUrl: '/api/v1/login',
+            verificationUrl: '/api/v1/verifiy',
+            logoutUrl: '/api/v1/logout',
             exclusiveRoles: true,
 	        roles: { admin: 'admin', editor: 'editor', user: 'user', all: '*' }
 	    });
@@ -230,6 +258,8 @@ angular
 	.config(function(dwAuthConfigProvider) {
 	    dwAuthConfigProvider.set({
             loginUrl: '/api/v1/login',
+            verificationUrl: '/api/v1/verifiy',
+            logoutUrl: '/api/v1/logout',
             exclusiveRoles: false,
 	        roles: { admin: 8, editor: 4, user: 2, guest: 1 }
 	    });
