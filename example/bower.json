@@ -18,6 +18,6 @@
   ],
   "dependencies": {
     "angular-ui-router": "ui-router#~0.2.15",
-    "angular-mocks": "^1.6.2",
+    "angular-mocks": "^1.6.2"
   }
 }
