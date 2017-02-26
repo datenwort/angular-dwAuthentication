@@ -2,7 +2,7 @@
 
 ## Version ##
 
-1.0.0
+2.0.0
 
 <!--## Installation ##
 
@@ -27,75 +27,85 @@
     'use strict';
 
     angular
-		.module('dwExample', ['ui.router', 'dwAuthentification'])
-		.config(function(dwAuthConfigProvider) {
-		    dwAuthConfigProvider.set({
+        .module('dwExample', ['ui.router', 'dwAuthentification'])
+        .config(function(dwAuthConfigProvider) {
+            dwAuthConfigProvider.set({
                 loginUrl: '/api/v1/login',
                 verificationUrl: '/api/v1/verifiy',
                 logoutUrl: '/api/v1/logout'
                 exclusiveRoles: false,
-		        roles: { admin: 8, editor: 4, user: 2, guest: 1 }
-		    });
-		})
-		.config(function ($stateProvider, dwAuthConfigProvider) {
-			$stateProvider.state('dashboard', {
-				url: '/dashboard',
-				views: {
-					"viewA": {
-					    template: '<div style="background-color: red; width:100px; height:100px;"></div>',
-						data: {
-						    authorizedRoles: dwAuthConfigProvider.roles().guest
-						}
-					},
-					"viewB": {
-					    template: '<div style="background-color: black; width:100px; height:100px;"></div>',
-					    data: {
-					        authorizedRoles: [dwAuthConfigProvider.roles().admin, dwAuthConfigProvider.roles().editor]
-						}
-					}
-				}
-			});
-		})
-		.run(function ($rootScope, AUTH_EVENTS, dwAuthService) {
-		    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-		        $.each(toState.views, function (viewName, view) {
+                roles: { admin: 8, editor: 4, user: 2, guest: 1 },
+                authStructure: { error: 'error', data: 'data' }
+            });
+        })
+        .config(function ($stateProvider, dwAuthConfigProvider) {
+            $stateProvider.state('dashboard', {
+                url: '/dashboard',
+                views: {
+                    "viewA": {
+                        template: '<div style="background-color: red; width:100px; height:100px;"></div>',
+                        data: {
+                            authorizedRoles: dwAuthConfigProvider.roles().guest
+                        }
+                    },
+                    "viewB": {
+                        template: '<div style="background-color: black; width:100px; height:100px;"></div>',
+                        data: {
+                            authorizedRoles: [dwAuthConfigProvider.roles().admin, dwAuthConfigProvider.roles().editor]
+                        }
+                    }
+                }
+            });
+        })
+        .run(function ($rootScope, AUTH_EVENTS, dwAuthService) {
+            $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+                angular.each(toState.views, function (viewName, view) {
                 
-					var authorizedRoles = view.data.authorizedRoles;
-				
-					if (!dwAuthService.isAuthorized(authorizedRoles)) {
-						event.preventDefault();
-						if (dwAuthService.isAuthenticated()) {
-							// user is not allowed
-							$rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
-						} else {
-						    // user is not logged in
-							$rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
-						}
-					}
-				});
-			});
-		})
-		.controller('IndexController', IndexController);
+                    var authorizedRoles = view.data.authorizedRoles;
+                
+                    if (!dwAuthService.isAuthorized(authorizedRoles)) {
+                        event.preventDefault();
+                        if (dwAuthService.isAuthenticated()) {
+                            // user is not allowed
+                            $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
+                        } else {
+                            // user is not logged in
+                            $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+                        }
+                    }
+                });
+            });
+        })
+        .controller('IndexController', IndexController);
 ```
 
 **Controller**
 		
 ```javascript
 
-	IndexController.$inject = ['$scope', '$rootScope', 'dwAuthConfig', 'dwAuthService'];
-	
-	function IndexController($scope, $rootScope, AuthConfig, dwAuthService) {
-		
-		var vm = this;
-		
-		vm.currentUser = { name: '', email: '', role: AuthConfig.roles.guest};
-		vm.userRoles = AuthConfig.roles;
-		vm.isAuthorized = dwAuthService.isAuthorized;
+    IndexController.$inject = ['$scope', '$rootScope', 'dwAuthConfig', 'dwAuthService'];
 
-		$rootScope.$on('dw:userChanged', function (event, data) {
-			vm.currentUser = data;
-		});
-	}
+    function IndexController($scope, $rootScope, AuthConfig, dwAuthService) {
+        
+        var vm = this;
+        
+        vm.currentUser = { name: '', email: '', role: AuthConfig.roles.guest};
+        vm.credentials = { username: '', password: '' };
+        vm.userRoles = AuthConfig.roles;
+        vm.isAuthorized = dwAuthService.isAuthorized;
+
+        vm.login = function() {
+            dwAuthService.login(vm.credentials).then(function () {
+                console.debug('done');
+            }, function (err) {
+                console.error(err);
+            });
+        }
+
+        $rootScope.$on('dw:userChanged', function (event, data) {
+            vm.currentUser = data;
+        });
+    }
 })();
 ```
 
@@ -108,11 +118,9 @@
 <head>
     <title>Example dwAuthentication</title>
 
-	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
 	<script type="text/javascript" src="node_modules/ui-router/angular-ui-router.js"></script>
-
-	<script type="text/javascript" src="bower_components/dwAuthentification/dist/dwAuthentication.min.js"></script>
+	<script type="text/javascript" src="bower_components/dwAuthentification/dist/dwAuthentication-2.0.0.min.js"></script>
     <script type="text/javascript" src="app.js"></script>
 
 </head>
@@ -124,7 +132,7 @@
         <input type="password" id="password" ng-model="vm.credentials.password">
         <label for="remember">Remember me</label>
         <input type="checkbox" id="remember" ng-model="vm.credentials.store">
-        <button type="submit">Login</button>
+        <button type="submit" ng-click="vm.login()">Login</button>
     </form>
 	<div ng-controller="IndexController as vm">
 		<div ng-if="vm.currentUser">Welcome, {{ vm.currentUser.name }}</div>
@@ -151,7 +159,8 @@ angular
             verificationUrl: '/api/v1/verify',
             logoutUrl: '/api/v1/logout',
             exclusiveRoles: false,
-	        roles: { admin: 8, editor: 4, user: 2, guest: 1 }
+	        roles: { admin: 8, editor: 4, user: 2, guest: 1 },
+            authStructure: { error: 'error', data: 'data' }
 	    });
 	})
 ```
@@ -220,7 +229,8 @@ angular
             verificationUrl: '/api/v1/verifiy',
             logoutUrl: '/api/v1/logout',
             exclusiveRoles: true,
-	        roles: { admin: 'admin', editor: 'editor', user: 'user', all: '*' }
+            roles: { admin: 'admin', editor: 'editor', user: 'user', all: '*' },
+            authStructure: { error: 'error', data: 'data' }
 	    });
 	});
 ```
@@ -261,7 +271,8 @@ angular
             verificationUrl: '/api/v1/verifiy',
             logoutUrl: '/api/v1/logout',
             exclusiveRoles: false,
-	        roles: { admin: 8, editor: 4, user: 2, guest: 1 }
+            roles: { admin: 8, editor: 4, user: 2, guest: 1 },
+            authStructure: { error: 'error', data: 'data' }
 	    });
 	});
 ```
@@ -290,3 +301,28 @@ angular
 		});
 	})
 ```
+### authStructure ###
+
+Set basic schema information of the response of the API call.
+
+```javascript
+angular
+	.config(function(dwAuthConfigProvider) {
+	    dwAuthConfigProvider.set({ authStructure: { error: 'error', data: 'data' });
+	});
+```
+
+The response object of an [angularjs $http](https://docs.angularjs.org/api/ng/service/$http) has these properties:
+
+* data – {string|Object} – The response body transformed with the transform functions.
+* status – {number} – HTTP status code of the response.
+* headers – {function([headerName])} – Header getter function.
+* config – {Object} – The configuration object that was used to generate the request.
+* statusText – {string} – HTTP status text of the response.
+
+The data property must contain at least an error object and a part where the necessary user data is transferred, e.g. ```data: { error: false, data: { user: { name: 'JSmith', id: 1, role: 2 }}}```.
+To identify how the data is structured, authStructure defines the basic values.
+
+Here some examples: 
+- ```data: { error: false, data: { user: { name: 'JSmith', id: 1, role: 2 }}}``` leads to ```{ error: 'error', data: 'data' }```
+- ```data: { exception: { code: 404, message: '404 }, user: {}}``` leads to ```{ error: 'exception', data: 'user' }```

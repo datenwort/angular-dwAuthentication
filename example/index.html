@@ -2,25 +2,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Authentication example</title>
-	<script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-    <script type="text/javascript" src="../bower_components/ngstorage/ngStorage.min.js"></script>
-	<script type="text/javascript" src="../dist/dwAuthentication.js"></script>
+	<script type="text/javascript" src="bower_components/angular-mocks/angular-mocks.js"></script>
+	<script type="text/javascript" src="bower_components/angular-mocks/ngMockE2E.js"></script>
+	<script type="text/javascript" src="dwAuthentication.min.js"></script>
     <script type="text/javascript" src="app.js"></script>
-    <!--link rel="stylesheet" href="dit.css" /-->
-	<!--script>
-		(function () {
-
-    	'use strict';
-
-	    angular
-			.module('dit', [])
-		})();
-	</script-->
 </head>
-<body ng-app="dit">
-	<dw-login-dialog>
+<body ng-app="authExp">
+	<!--dw-login-dialog-->
+	<!--/dw-login-dialog-->
+	<div ng-controller="IndexController as vm">
 		<form name="loginForm" ng-submit="vm.login()" novalidate>
 			<label for="username">Username:</label>
 			<input type="text" id="username" ng-model="vm.credentials.username">
@@ -28,16 +20,15 @@
 			<input type="password" id="password" ng-model="vm.credentials.password">
 			<label for="remember">Remember me</label>
 			<input type="checkbox" id="remember" ng-model="vm.credentials.store">
-			<button type="submit">Login</button>
+			<button type="submit" ng-click="login()">Login</button>
 		</form>
-	</dw-login-dialog>
-	<div ng-controller="IndexController as vm">
 		<div ng-if="vm.currentUser">Welcome, {{ vm.currentUser.name }}</div>
 		<div ng-if="vm.isAuthorized(vm.userRoles.admin)">You're admin.</div>
 		{{ vm.currentUser.role }} {{ vm.currentUser.role == vm.userRoles.editor}}
 		<div ng-switch on="vm.currentUser.role">
 			<div ng-switch-when="8">You're admin.</div>
 			<div ng-switch-when="4">You're editor.</div>
+			<div ng-switch-when="2">You're just normal.</div>
 			<div ng-switch-default>You're something else.</div>
 		</div>
 	</div>
